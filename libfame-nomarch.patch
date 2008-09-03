@@ -1,0 +1,48 @@
+diff -Naru libfame-0.9.1.orig/configure libfame-0.9.1/configure
+--- libfame-0.9.1.orig/configure	2004-02-11 15:12:28.000000000 +0200
++++ libfame-0.9.1/configure	2004-07-18 00:01:13.266432497 +0300
+@@ -4505,18 +4505,11 @@
+         fi
+         ;;
+     i386-*-*)
+-            if test x$ac_cv_c_compiler_gnu = xyes; then
+-                CFLAGS="$CFLAGS -march=i386"
+-            fi
+-            ;;
+-    i486-*-*)
+-            if test x$ac_cv_c_compiler_gnu = xyes; then
+-                CFLAGS="$CFLAGS -march=i486 -DHAS_BSWAP"
+-            fi
++            true
+             ;;
+     i?86-*-*)
+             if test x$ac_cv_c_compiler_gnu = xyes; then
+-                CFLAGS="$CFLAGS -march=i586 -DHAS_BSWAP"
++                CFLAGS="$CFLAGS -DHAS_BSWAP"
+             fi
+             ;;
+ esac
+diff -Naru libfame-0.9.1.orig/configure.in libfame-0.9.1/configure.in
+--- libfame-0.9.1.orig/configure.in	2004-02-11 15:12:24.000000000 +0200
++++ libfame-0.9.1/configure.in	2004-07-18 00:01:01.288132690 +0300
+@@ -61,18 +61,11 @@
+         fi
+         ;;
+     i386-*-*)
+-            if test x$ac_cv_prog_gcc = xyes; then
+-                CFLAGS="$CFLAGS -march=i386"
+-            fi
+-            ;;
+-    i486-*-*)
+-            if test x$ac_cv_prog_gcc = xyes; then
+-                CFLAGS="$CFLAGS -march=i486 -DHAS_BSWAP"
+-            fi
++            true
+             ;;
+     i?86-*-*)
+             if test x$ac_cv_prog_gcc = xyes; then
+-                CFLAGS="$CFLAGS -march=i586 -DHAS_BSWAP"
++                CFLAGS="$CFLAGS -DHAS_BSWAP"
+             fi
+             ;;
+ esac
