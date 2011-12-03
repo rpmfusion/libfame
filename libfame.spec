@@ -22,7 +22,7 @@ FAME is a library for fast MPEG encoding.
 %package devel
 Summary: 	Libraries and include to develop using FAME
 Group: 		Development/Libraries
-Requires: 	%{name} = %{version}-%{release}
+Requires: 	%{name}%{?_isa} = %{version}-%{release}
 
 %description devel
 FAME is a library for fast MPEG encoding.
