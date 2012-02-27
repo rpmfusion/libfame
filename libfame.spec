@@ -4,6 +4,7 @@ Version:   	0.9.1
 Release:   	14%{?dist}
 License: 	LGPL
 Group:     	System Environment/Libraries
+URL:       	http://fame.sourceforge.net/
 Source0:   	http://download.sourceforge.net/fame/%{name}-%{version}.tar.gz
 Patch0:   	%{name}-aclocal18.patch
 Patch1:   	%{name}-config-rpath.patch
@@ -12,12 +13,13 @@ Patch3:   	%{name}-nomarch.patch
 Patch4:   	http://www.linuxfromscratch.org/blfs/downloads/svn/libfame-0.9.1-gcc34-1.patch
 Patch5:         libfame-0.9.1-fstrict-aliasing.patch
 Patch6:         libfame-0.9.1-x86_64.patch
-URL:       	http://fame.sourceforge.net/
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
+
 BuildRequires:  autoconf, automake, libtool
+
 
 %description
 FAME is a library for fast MPEG encoding.
+
 
 %package devel
 Summary: 	Libraries and include to develop using FAME
@@ -41,8 +43,8 @@ you can use to develop FAME applications.
 %patch6 -p1 -b .x86_64
 # This is required since the included libtool stuff is too old and breaks
 # linking (-lm and -lc functions not found!) on FC5 x86_64.
-%{__rm} -f acinclude.m4 aclocal.m4
-%{__cp} -f /usr/share/aclocal/libtool.m4 libtool.m4
+rm -f acinclude.m4 aclocal.m4
+cp -f /usr/share/aclocal/libtool.m4 libtool.m4
 touch NEWS ChangeLog
 autoreconf --force --install
 
@@ -62,22 +64,18 @@ make %{?_smp_flags}
 
 
 %install
-rm -Rf $RPM_BUILD_ROOT
 make install DESTDIR=$RPM_BUILD_ROOT
 
-%clean
-rm -Rf $RPM_BUILD_ROOT
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
+
 %files
-%defattr(-,root,root,-)
 %doc AUTHORS BUGS CHANGES COPYING README TODO
 %{_libdir}/libfame*.so.*
 
 %files devel
-%defattr(-,root,root,-)
 %exclude %{_libdir}/libfame.la
 %{_bindir}/libfame-config
 %{_includedir}/fame*.h
@@ -85,6 +83,7 @@ rm -Rf $RPM_BUILD_ROOT
 %{_libdir}/libfame.so
 %{_datadir}/aclocal/libfame.m4
 %{_mandir}/man3/fame*.3*
+
 
 %changelog
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.9.1-14
