@@ -1,7 +1,7 @@
 Summary:   	Fast Assembly MPEG Encoding library
 Name:      	libfame
 Version:   	0.9.1
-Release:   	14%{?dist}
+Release:   	15%{?dist}
 License: 	LGPL
 Group:     	System Environment/Libraries
 URL:       	http://fame.sourceforge.net/
@@ -30,6 +30,16 @@ Requires: 	%{name}%{?_isa} = %{version}-%{release}
 FAME is a library for fast MPEG encoding.
 This package contains the libraries, include files and other resources
 you can use to develop FAME applications.
+
+%package static
+Summary:        Static Libraries to develop using FAME
+Group:          Development/Libraries
+Requires: 	%{name}-devel%{?_isa} = %{version}-%{release}
+
+%description static
+FAME is a library for fast MPEG encoding.
+This package contains the static libraries you can use to develop FAME
+applications.
 
 
 %prep
@@ -64,7 +74,7 @@ make %{?_smp_flags}
 
 
 %install
-make install DESTDIR=$RPM_BUILD_ROOT
+make install DESTDIR=%{buildroot}
 
 
 %post -p /sbin/ldconfig
@@ -75,17 +85,23 @@ make install DESTDIR=$RPM_BUILD_ROOT
 %doc AUTHORS BUGS CHANGES COPYING README TODO
 %{_libdir}/libfame*.so.*
 
+%files static
+%{_libdir}/libfame.a
+
 %files devel
 %exclude %{_libdir}/libfame.la
 %{_bindir}/libfame-config
 %{_includedir}/fame*.h
-%{_libdir}/libfame.a
 %{_libdir}/libfame.so
 %{_datadir}/aclocal/libfame.m4
 %{_mandir}/man3/fame*.3*
 
 
 %changelog
+* Tue Apr 10 2012 Richard Shaw <hobbes1069@gmail.com> - 0.9.1-15
+- Move static librari to a separate package as required by the Fedora
+  packaging guidelines.
+
 * Sun Mar 29 2009 Thorsten Leemhuis <fedora [AT] leemhuis [DOT] info> - 0.9.1-14
 - rebuild for new F11 features
 
