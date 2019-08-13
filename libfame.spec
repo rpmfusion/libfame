@@ -1,28 +1,29 @@
-Summary:   	Fast Assembly MPEG Encoding library
-Name:      	libfame
-Version:   	0.9.1
-Release:   	23%{?dist}
-License: 	LGPL
-Group:     	System Environment/Libraries
-Source0:   	http://download.sourceforge.net/fame/%{name}-%{version}.tar.gz
-Patch0:   	%{name}-aclocal18.patch
-Patch1:   	%{name}-config-rpath.patch
-Patch2:   	%{name}-gccver.patch
-Patch3:   	%{name}-nomarch.patch
-Patch4:   	http://www.linuxfromscratch.org/blfs/downloads/svn/libfame-0.9.1-gcc34-1.patch
-Patch5:         libfame-0.9.1-fstrict-aliasing.patch
-Patch6:         libfame-0.9.1-x86_64.patch
-URL:       	http://fame.sourceforge.net/
-BuildRoot: 	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
-BuildRequires:  autoconf, automake, libtool
+Name:       libfame
+Summary:    Fast Assembly MPEG Encoding library
+Version:    0.9.1
+Release:    24%{?dist}
+License:    LGPLv2+
+URL:        http://fame.sourceforge.net/
+Source0:    http://download.sourceforge.net/fame/%{name}-%{version}.tar.gz
+Patch0:     %{name}-aclocal18.patch
+Patch1:     %{name}-config-rpath.patch
+Patch2:     %{name}-gccver.patch
+Patch3:     %{name}-nomarch.patch
+# Patch from http://www.linuxfromscratch.org/blfs/downloads/svn/
+Patch4:     %{name}-0.9.1-gcc34-1.patch
+Patch5:     %{name}-0.9.1-fstrict-aliasing.patch
+Patch6:     %{name}-0.9.1-x86_64.patch
+
+BuildRequires:  autoconf
+BuildRequires:  automake
+BuildRequires:  libtool
 
 %description
 FAME is a library for fast MPEG encoding.
 
 %package devel
-Summary: 	Libraries and include to develop using FAME
-Group: 		Development/Libraries
-Requires: 	%{name} = %{version}-%{release}
+Summary:    Libraries and include to develop using FAME
+Requires:   %{name}%{?isa} = %{version}-%{release}
 
 %description devel
 FAME is a library for fast MPEG encoding.
@@ -42,9 +43,9 @@ you can use to develop FAME applications.
 # This is required since the included libtool stuff is too old and breaks
 # linking (-lm and -lc functions not found!) on FC5 x86_64.
 %{__rm} -f acinclude.m4 aclocal.m4
-%{__cp} -f /usr/share/aclocal/libtool.m4 libtool.m4
+%{__cp} -f %{_datadir}/aclocal/libtool.m4 libtool.m4
 touch NEWS ChangeLog
-autoreconf --force --install
+autoreconf -fiv
 
 # Fix lib stuff for lib64
 %{__perl} -pi.orig -e 's|/lib"|/%{_lib}"|g' configure.in
@@ -58,35 +59,43 @@ autoreconf --force --install
 %else
   --disable-mmx
 %endif
-make %{?_smp_flags}
+%{make_build}
 
 
 %install
-rm -Rf $RPM_BUILD_ROOT
-make install DESTDIR=$RPM_BUILD_ROOT
+%{make_install}
 
-%clean
-rm -Rf $RPM_BUILD_ROOT
+#Remove libtool archives.
+find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 
 %post -p /sbin/ldconfig
 %postun -p /sbin/ldconfig
 
 %files
-%defattr(-,root,root,-)
-%doc AUTHORS BUGS CHANGES COPYING README TODO
+%doc AUTHORS BUGS CHANGES README TODO
+%license COPYING
 %{_libdir}/libfame*.so.*
 
 %files devel
-%defattr(-,root,root,-)
-%exclude %{_libdir}/libfame.la
 %{_bindir}/libfame-config
 %{_includedir}/fame*.h
-%{_libdir}/libfame.a
 %{_libdir}/libfame.so
 %{_datadir}/aclocal/libfame.m4
 %{_mandir}/man3/fame*.3*
 
 %changelog
+* Tue Aug 13 2019 Leigh Scott <leigh123linux@gmail.com> - 0.9.1-24
+- Remove BuildRoot tag
+- Remove Group tag
+- Add isa to devel requires
+- Remove clean section
+- Remove defattr from files
+- Delete .a and .la files
+- Spec file clean up
+- Install license file correctly
+- Fix license type
+- Fix mixed use of tabs and whitespace
+
 * Fri Aug 09 2019 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.9.1-23
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_31_Mass_Rebuild
 
