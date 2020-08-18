@@ -1,7 +1,7 @@
 Name:       libfame
 Summary:    Fast Assembly MPEG Encoding library
 Version:    0.9.1
-Release:    25%{?dist}
+Release:    26%{?dist}
 License:    LGPLv2+
 URL:        http://fame.sourceforge.net/
 Source0:    http://download.sourceforge.net/fame/%{name}-%{version}.tar.gz
@@ -84,6 +84,9 @@ find %buildroot -name '*.la' -or -name '*.a' | xargs rm -f
 %{_mandir}/man3/fame*.3*
 
 %changelog
+* Tue Aug 18 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.9.1-26
+- Rebuilt for https://fedoraproject.org/wiki/Fedora_33_Mass_Rebuild
+
 * Tue Feb 04 2020 RPM Fusion Release Engineering <leigh123linux@gmail.com> - 0.9.1-25
 - Rebuilt for https://fedoraproject.org/wiki/Fedora_32_Mass_Rebuild
 
